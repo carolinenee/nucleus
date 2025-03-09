@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nucleus Web Map</title>
+    <title>nucelus stuff</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    
+    <div id="my-map" class="map-container"></div>
+    <script src="script.js"></script>
+    <div id="filters">
+        <h3>Filter by Day</h3>
+        <button onclick="filterByDay('monday')">Monday</button>
+        <button onclick="filterByDay('tuesday')">Tuesday</button>
+        <button onclick="filterByDay('wednesday')">Wednesday</button>
+        <button onclick="filterByDay('thursday')">Thursday</button>
+        <button onclick="filterByDay('friday')">Friday</button>
+        <button onclick="filterByDay('saturday')">Saturday</button>
+        <button onclick="filterByDay('sunday')">Sunday</button>
+      </div>
 </body>
-</html>
