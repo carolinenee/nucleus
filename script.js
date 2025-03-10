@@ -14,17 +14,12 @@ map.on('load', () => {
     });
 
     map.addLayer({ //adding the food program data to the map 
-      id: 'locations-layer', 
-      type: 'circle',
-      source: 'food_data',
-      paint: {
-        'circle-radius': 5,
-        'circle-color': '#000000'
-      }
+        id: 'locations-layer',
+        type: 'circle',
+        source: 'food_data',
+        paint: {
+            'circle-radius': 5,
+            'circle-color': '#000000'
+        }
     });
-  });
-
-  // Function to filter by day
-  function filterByDay(day) {
-    map.setFilter('locations-layer', ['==', ['get', day], 1]);
-  }
+});
