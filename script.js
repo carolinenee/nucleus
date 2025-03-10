@@ -22,4 +22,18 @@ map.on('load', () => {
             'circle-color': '#000000'
         }
     });
+   document.querySelectorAll('#filters button').forEach(button => {
+        button.addEventListener('click', () => {
+          const selectedDay = button.getAttribute('data-day');
+          filterByDays([selectedDay]); // Pass the selected day as an array
+        });
+      });
 });
+
+function filterByDays(days) {
+    const filterConditions = ['all']; // Start with an "and" condition
+    days.forEach(day => {
+      filterConditions.push(['==', ['get', day], 1]);
+    });
+    map.setFilter('locations-layer', filterConditions);
+  }
