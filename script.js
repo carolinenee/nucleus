@@ -125,9 +125,9 @@ function filterWalkPolygons(e) {
 function filterPTPolygons(e) {
   var foodProg = e.features[0].properties.OBJECTID.toString();
 
-  map.setLayoutProperty('pt_da_data', 'visibility', 'visible');
+  map.setLayoutProperty('pt_data', 'visibility', 'visible');
 
-  map.setPaintProperty('pt_da_data', 'fill-color', [
+  map.setPaintProperty('pt_data', 'fill-color', [
     'case', 
     ['==', ['get', foodProg], null], 'rgba (0,0,0,0)', 
     ['step', ['to-number', ['get', foodProg]],
@@ -144,7 +144,7 @@ map.on('click', 'locations-layer', (e) => {
 
   map.flyTo({
     center: coordinates,
-    zoom: 13,
+    zoom: 12,
     essential: true
   });
 

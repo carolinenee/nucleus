@@ -1574,7 +1574,7 @@
                 "Morning (before 1pm)": 1,
                 "Afternoon (1-5pm)": 1,
                 "Evening (after 5)": 0,
-                "monday ": 1,
+                "monday ": [0,0,0],
                 "tuesday ": 1,
                 "wednesday ": 1,
                 "thursday": 1,
