@@ -25,21 +25,31 @@ map.on('load', () => {
     }
   });
 
+  
   //loading walk polygons data for all food programs
   map.addSource('walk_data', {
     type: 'geojson',
     data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/TRIAL.geojson'
   });
 
-  /*map.addSource('walk_data', {
-    type: 'geojson',
-    data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/TRIALda.geojson'
-  });*/
-
   map.addLayer({
     id: 'walk_data',
     type: 'fill',
     source: 'walk_data',
+    paint: {
+      'fill-opacity': 0.66
+    }
+  });
+
+  map.addSource('walk_da_data', {
+    type: 'geojson',
+    data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/TRIALda.geojson'
+  });
+
+  map.addLayer({
+    id: 'walk_da_data',
+    type: 'fill',
+    source: 'walk_da_data',
     paint: {
       'fill-opacity': 0.66
     }
@@ -59,8 +69,24 @@ map.on('load', () => {
     }
   });
 
+  map.addSource('pt_da_data', {
+    type: 'geojson',
+    data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/TRIALdapt.geojson'
+  });
+
+  map.addLayer({
+    id: 'pt_da_data',
+    type: 'fill',
+    source: 'pt_da_data',
+    paint: {
+      'fill-opacity': 0.66
+    }
+  });
+
   map.setLayoutProperty('walk_data', 'visibility', 'none');
+  map.setLayoutProperty('walk_da_data', 'visibility', 'none');
   map.setLayoutProperty('pt_data', 'visibility', 'none');
+  map.setLayoutProperty('pt_da_data', 'visibility', 'none');
 
   document.querySelectorAll('#filters button').forEach(button => {
     button.addEventListener('click', () => {
@@ -99,9 +125,9 @@ function filterWalkPolygons(e) {
 function filterPTPolygons(e) {
   var foodProg = e.features[0].properties.OBJECTID.toString();
 
-  map.setLayoutProperty('pt_data', 'visibility', 'visible');
+  map.setLayoutProperty('pt_da_data', 'visibility', 'visible');
 
-  map.setPaintProperty('pt_data', 'fill-color', [
+  map.setPaintProperty('pt_da_data', 'fill-color', [
     'case', 
     ['==', ['get', foodProg], null], 'rgba (0,0,0,0)', 
     ['step', ['to-number', ['get', foodProg]],
