@@ -25,6 +25,23 @@ map.on('load', () => {
     }
   });
 
+  //loading walk polygons data for all food programs
+  map.addSource('walk_data', {
+    type: 'geojson',
+    data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/TRIAL.geojson'
+  });
+
+  map.addLayer({
+    id: 'walk_data',
+    type: 'fill',
+    source: 'walk_data',
+    paint: {
+      'fill-opacity': 0.66
+    }
+  })
+
+  map.setLayoutProperty('walk_data', 'visibility', 'none');
+
   document.querySelectorAll('#filters button').forEach(button => {
     button.addEventListener('click', () => {
       const selectedDay = button.getAttribute('data-day');
@@ -40,3 +57,33 @@ function filterByDays(days) {
   });
   map.setFilter('locations-layer', filterConditions);
 }
+
+function filterWalkPolygons(e) {
+  var foodProg = e.features[0].properties.OBJECTID.toString();
+
+  // Set visibility
+  map.setLayoutProperty('walk_data', 'visibility', 'visible');
+
+  map.setPaintProperty('walk_data', 'fill-color', [
+    'case', 
+    ['==', ['get', foodProg], null], 'rgba (0,0,0,0)', 
+    ['step', ['to-number', ['get', foodProg]],
+    '#063b00', 10,
+    '#089000', 20,
+    '#0eff00', 30,
+    'rgba (0,0,0,0)'
+  ]
+  ]);
+}
+
+map.on('click', 'locations-layer', (e) => {
+  const coordinates = e.features[0].geometry.coordinates.slice();
+
+  map.flyTo({
+    center: coordinates,
+    zoom: 13,
+    essential: true
+  });
+
+  filterWalkPolygons(e);
+});
