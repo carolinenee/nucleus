@@ -31,6 +31,11 @@ map.on('load', () => {
     data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/TRIAL.geojson'
   });
 
+  /*map.addSource('walk_data', {
+    type: 'geojson',
+    data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/TRIALda.geojson'
+  });*/
+
   map.addLayer({
     id: 'walk_data',
     type: 'fill',
@@ -38,9 +43,24 @@ map.on('load', () => {
     paint: {
       'fill-opacity': 0.66
     }
-  })
+  });
+
+  map.addSource('pt_data', {
+    type: 'geojson',
+    data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/TRIALpt.geojson'
+  });
+
+  map.addLayer({
+    id: 'pt_data',
+    type: 'fill',
+    source: 'pt_data',
+    paint: {
+      'fill-opacity': 0.66
+    }
+  });
 
   map.setLayoutProperty('walk_data', 'visibility', 'none');
+  map.setLayoutProperty('pt_data', 'visibility', 'none');
 
   document.querySelectorAll('#filters button').forEach(button => {
     button.addEventListener('click', () => {
@@ -76,6 +96,23 @@ function filterWalkPolygons(e) {
   ]);
 }
 
+function filterPTPolygons(e) {
+  var foodProg = e.features[0].properties.OBJECTID.toString();
+
+  map.setLayoutProperty('pt_data', 'visibility', 'visible');
+
+  map.setPaintProperty('pt_data', 'fill-color', [
+    'case', 
+    ['==', ['get', foodProg], null], 'rgba (0,0,0,0)', 
+    ['step', ['to-number', ['get', foodProg]],
+    '#063b00', 15,
+    '#089000', 30,
+    '#0eff00', 45,
+    'rgba (0,0,0,0)'
+  ]
+  ]);
+}
+
 map.on('click', 'locations-layer', (e) => {
   const coordinates = e.features[0].geometry.coordinates.slice();
 
@@ -85,5 +122,5 @@ map.on('click', 'locations-layer', (e) => {
     essential: true
   });
 
-  filterWalkPolygons(e);
+  filterPTPolygons(e);
 });
