@@ -16,14 +16,33 @@
     <script src="script.js"></script>
     <h1>Food Services</h1>
     <h2>In Peel</h2>
-    <div id="filters" class = "col-1">
-        <button data-day="monday ">Monday</button>
-        <button data-day="tuesday ">Tuesday</button>
-        <button data-day="wednesday ">Wednesday</button>
-        <button data-day="thursday">Thursday</button>
-        <button data-day="friday ">Friday</button>
-        <button data-day="saturday">Saturday</button>
-        <button data-day="sunday">Sunday</button>
+ <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="day-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Select Days
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="day-dropdown">
+            <li><label class="dropdown-item"><input type="checkbox" name="day" value="monday">Monday</label></li>
+            <li><label class="dropdown-item"><input type="checkbox" name="day" value="tuesday">Tuesday</label></li>
+            <li><label class="dropdown-item"><input type="checkbox" name="day" value="wednesday">Wednesday</label></li>
+            <li><label class="dropdown-item"><input type="checkbox" name="day" value="thursday">Thursday</label></li>
+            <li><label class="dropdown-item"><input type="checkbox" name="day" value="friday">Friday</label></li>
+            <li><label class="dropdown-item"><input type="checkbox" name="day" value="saturday">Saturday</label></li>
+            <li><label class="dropdown-item"><input type="checkbox" name="day" value="sunday">Sunday</label></li>
+        </ul>
     </div>
+       <!-- Time Filters Dropdown -->
+       <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="time-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Select Times
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="time-dropdown">
+            <li><label class="dropdown-item"><input type="checkbox" name="time" value="morning"> Morning</label></li>
+            <li><label class="dropdown-item"><input type="checkbox" name="time" value="afternoon"> Afternoon</label></li>
+            <li><label class="dropdown-item"><input type="checkbox" name="time" value="evening"> Evening</label></li>
+        </ul>
+    </div>
+
+    <!-- Reset Filters -->
+    <button id="reset-filters" class="btn btn-danger">Reset Filters</button> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
