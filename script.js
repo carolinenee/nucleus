@@ -1,3 +1,5 @@
+document.addEventListener('DOMContentLoaded', function() {
+
 mapboxgl.accessToken = "pk.eyJ1IjoiY2Fyb2xpbmVuZWUiLCJhIjoiY201b2RhZmxtMGthajJucHRxcW5heGxiNyJ9.NMKAQoQvhYJ8RQq0NQuYkA"; // token to use mapbox API 
 const map = new mapboxgl.Map({
   container: 'my-map', // map container ID
@@ -28,7 +30,7 @@ map.on('load', () => {
   //loading walk coverage data
   map.addSource('walk_data', {
     type: 'geojson',
-    data: 'LOREMIPSUM ADD IT LATER'
+    data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/walk.geojson'
   });
 
   //adding the walk coverage data to the map
@@ -44,7 +46,7 @@ map.on('load', () => {
   //loading public transit coverage data
   map.addSource('pt_data', {
     type: 'geojson',
-    data: 'LOREMIPSUM ADD IT LATER'
+    data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/totalpt.geojson'
   });
 
   //adding the public transit coverage data to the map
@@ -69,6 +71,8 @@ let selectedTime = null;
 
 // Function to update filters when checkboxes are clicked
 function updateFilters() {
+
+  console.log('Updating filters with day:', selectedDay, 'and time:', selectedTime);
 
   if (!selectedDay || !selectedTime) {
     map.setFilter('food_data', ['all']);
@@ -123,6 +127,15 @@ document.getElementById('reset-filters').addEventListener('click', () => {
   document.getElementById('walk_pt').checked = false;
   document.getElementById('walk').disabled = true;
   document.getElementById('walk_pt').disabled = true;
+
+  map.flyTo({
+    center: [-79.7018518888638, 43.668552107715904],
+    zoom: 9,
+    essential: true
+  });
+
+  map.setLayoutProperty('walk_data', 'visibility', 'none');
+  map.setLayoutProperty('pt_data', 'visibility', 'none');
 });
 
 //-------------------------------------------------------------------------------------------------------------------------
@@ -138,6 +151,7 @@ map.on('click', 'food_data', (e) => {
   });
 
   foodProg = e.features[0].properties.OBJECTID.toString();
+  console.log('foodProg set to:', foodProg); 
 
   document.getElementById('walk').disabled = false;
   document.getElementById('walk_pt').disabled = false;
@@ -149,6 +163,7 @@ map.on('click', 'food_data', (e) => {
 
 function initCheckboxListeners() {
   document.getElementById('walk').addEventListener('change', function() {
+    console.log('Walk checkbox toggled:', this.checked);
     if (this.checked) {
       document.getElementById('walk_pt').checked = false; // Disable the other checkbox
     } else {
@@ -158,6 +173,7 @@ function initCheckboxListeners() {
   });
   
   document.getElementById('walk_pt').addEventListener('change', function() {
+    console.log('Walk + PT checkbox toggled:', this.checked);
     if (this.checked) {
       document.getElementById('walk').checked = false; // Disable the other checkbox
     } else {
@@ -216,3 +232,6 @@ function filterPTPolygons(foodProg) {
   ]
   ]);
 }
+
+}
+);
