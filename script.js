@@ -2,21 +2,21 @@ mapboxgl.accessToken = "pk.eyJ1IjoiY2Fyb2xpbmVuZWUiLCJhIjoiY201b2RhZmxtMGthajJuc
 const map = new mapboxgl.Map({
   container: 'my-map', // map container ID
   style: 'mapbox://styles/mapbox/standard', // standard mapbox style 
-  center: [-79.7018518888638, 43.668552107715904], // starting position [lng, lat] of peel
-  zoom: 9, // starting zoom
+  center: [-79.7018518888638, 43.668552107715904], // starting position [lng, lat] of Peel Region
+  zoom: 9, // starting zoom level
 });
 
 map.on('load', () => {
 
-  //loading food program data
+  //loading food program point data
   map.addSource('food_data', {
     type: 'geojson',
     data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/Food%20Services%20Locations%20and%20Day_Time%20Filters.geojson' // link to git hub raw data file
   });
 
-  //adding the food program data to the map 
+  //adding the food program point data to the map 
   map.addLayer({
-    id: 'locations-layer',
+    id: 'food_data',
     type: 'circle',
     source: 'food_data',
     paint: {
@@ -25,13 +25,13 @@ map.on('load', () => {
     }
   });
 
-
-  //loading walk polygons data for all food programs
+  //loading walk coverage data
   map.addSource('walk_data', {
     type: 'geojson',
-    data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/TRIAL.geojson'
+    data: 'LOREMIPSUM ADD IT LATER'
   });
 
+  //adding the walk coverage data to the map
   map.addLayer({
     id: 'walk_data',
     type: 'fill',
@@ -41,25 +41,13 @@ map.on('load', () => {
     }
   });
 
-  map.addSource('walk_da_data', {
-    type: 'geojson',
-    data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/TRIALda.geojson'
-  });
-
-  map.addLayer({
-    id: 'walk_da_data',
-    type: 'fill',
-    source: 'walk_da_data',
-    paint: {
-      'fill-opacity': 0.66
-    }
-  });
-
+  //loading public transit coverage data
   map.addSource('pt_data', {
     type: 'geojson',
-    data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/TRIALpt.geojson'
+    data: 'LOREMIPSUM ADD IT LATER'
   });
 
+  //adding the public transit coverage data to the map
   map.addLayer({
     id: 'pt_data',
     type: 'fill',
@@ -69,132 +57,162 @@ map.on('load', () => {
     }
   });
 
-  map.addSource('pt_da_data', {
-    type: 'geojson',
-    data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/TRIALdapt.geojson'
-  });
-
-  map.addLayer({
-    id: 'pt_da_data',
-    type: 'fill',
-    source: 'pt_da_data',
-    paint: {
-      'fill-opacity': 0.66
-    }
-  });
-
+  //setting both walking and public transit coverage layers to invisible at first because they will be activated later
   map.setLayoutProperty('walk_data', 'visibility', 'none');
-  map.setLayoutProperty('walk_da_data', 'visibility', 'none');
   map.setLayoutProperty('pt_data', 'visibility', 'none');
-  map.setLayoutProperty('pt_da_data', 'visibility', 'none');
 
-  // Add event listeners for checkboxes
-  document.querySelectorAll('input[name="day"], input[name="time"]').forEach(checkbox => {
-    checkbox.addEventListener('change', updateFilters);
-  });
-
-  // Add event listener for reset button
-  document.getElementById('reset-filters').addEventListener('click', () => {
-    // Uncheck all checkboxes
-    document.querySelectorAll('input[name="day"], input[name="time"]').forEach(checkbox => {
-      checkbox.checked = false;
-    });
-
-    // Reset filters
-    currentDayFilter = ['all'];
-    currentTimeFilter = ['all'];
-    map.setFilter('locations-layer', ['all']);
-  });
+  initCheckboxListeners();
 });
 
-let currentDayFilter = ['all']; // Stores the current day filter
-let currentTimeFilter = ['all']; // Stores the current time filter
+let selectedDay = null;
+let selectedTime = null;
 
 // Function to update filters when checkboxes are clicked
 function updateFilters() {
-  // Get selected days
-  const selectedDays = Array.from(document.querySelectorAll('input[name="day"]:checked'))
-    .map(checkbox => checkbox.value.trim()); // Trim to remove extra spaces
 
-  // Update the day filter
-  currentDayFilter = ['all'];
-  selectedDays.forEach(day => {
-    const dayFilter = ['any',
-      ['==', ['at', 0, ['coalesce', ['get', day], ['literal', [0, 0, 0]]]], 1], // Check first element (morning)
-      ['==', ['at', 1, ['coalesce', ['get', day], ['literal', [0, 0, 0]]]], 1], // Check second element (afternoon)
-      ['==', ['at', 2, ['coalesce', ['get', day], ['literal', [0, 0, 0]]]], 1]  // Check third element (evening)
-    ];
-    currentDayFilter.push(dayFilter);
+  if (!selectedDay || !selectedTime) {
+    map.setFilter('food_data', ['all']);
+    return;
+  }
+
+  const timeIndex = { morning: 0, afternoon: 1, evening: 2 }[selectedTime];
+
+  const filter = [
+    '==',
+    ['at', timeIndex, ['coalesce', ['get', selectedDay], ['literal', [0, 0, 0]]]],
+    1
+  ];
+
+  map.setFilter('food_data', ['all', filter]);
+
+  if (foodProg) updateLayers();
+};
+
+document.querySelectorAll('.day-option').forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.preventDefault();
+    selectedDay = e.target.dataset.day;
+
+    document.querySelectorAll('.day-option').forEach(opt => opt.classList.remove('active'));
+    e.target.classList.add('active');
+
+    updateFilters();
+  });
+});
+
+document.querySelectorAll('.time-option').forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.preventDefault();
+    selectedTime = e.target.dataset.time;
+
+    document.querySelectorAll('.time-option').forEach(opt => opt.classList.remove('active'));
+    e.target.classList.add('active');
+
+    updateFilters();
+  });
+});
+
+document.getElementById('reset-filters').addEventListener('click', () => {
+  selectedDay = null;
+  selectedTime = null;
+
+  document.querySelectorAll('.day-option, .time-option').forEach(opt => opt.classList.remove('active'));
+
+  map.setFilter('food_data', ['all']);
+
+  document.getElementById('walk_pt').checked = false;
+  document.getElementById('walk').disabled = true;
+  document.getElementById('walk_pt').disabled = true;
+});
+
+//-------------------------------------------------------------------------------------------------------------------------
+
+//From Khalis separate files
+map.on('click', 'food_data', (e) => {
+  const coordinates = e.features[0].geometry.coordinates.slice();
+
+  map.flyTo({
+    center: coordinates,
+    zoom: 11,
+    essential: true
   });
 
-  // Get selected times
-  const selectedTimes = Array.from(document.querySelectorAll('input[name="time"]:checked'))
-    .map(checkbox => checkbox.value);
+  foodProg = e.features[0].properties.OBJECTID.toString();
 
-  // Update the time filter
-  currentTimeFilter = ['all'];
-  selectedTimes.forEach(time => {
-    const timeIndex = { morning: 0, afternoon: 1, evening: 2 }[time];
-    const timeFilter = ['any'];
-    selectedDays.forEach(day => {
-      timeFilter.push(['==', ['at', timeIndex, ['coalesce', ['get', day], ['literal', [0, 0, 0]]]], 1]);
-    });
-    currentTimeFilter.push(timeFilter);
+  document.getElementById('walk').disabled = false;
+  document.getElementById('walk_pt').disabled = false;
+
+  initCheckboxListeners();
+
+  updateLayers();
+});
+
+function initCheckboxListeners() {
+  document.getElementById('walk').addEventListener('change', function() {
+    if (this.checked) {
+      document.getElementById('walk_pt').checked = false; // Disable the other checkbox
+    } else {
+      document.getElementById('walk_pt').checked = true; // Re-enable the other checkbox
+    }
+    updateLayers(); // Update the map layers
   });
+  
+  document.getElementById('walk_pt').addEventListener('change', function() {
+    if (this.checked) {
+      document.getElementById('walk').checked = false; // Disable the other checkbox
+    } else {
+      document.getElementById('walk').checked = true; // Re-enable the other checkbox
+    }
+    updateLayers(); // Update the map layers
+  });
+};
 
-  // Apply the combined filters
-  const combinedFilter = ['all', ...currentDayFilter.slice(1), ...currentTimeFilter.slice(1)];
-  map.setFilter('locations-layer', combinedFilter);
+function updateLayers() {
+  if (!foodProg) return;
 
-  // Debugging: Log selected days and times
-  console.log('Selected Days:', selectedDays);
-  console.log('Selected Times:', selectedTimes);
-  console.log('Combined Filter:', combinedFilter);
+  if (document.getElementById('walk').checked) {
+    filterWalkPolygons(foodProg);
+    map.setLayoutProperty('pt_data', 'visibility', 'none');
+  } else if (document.getElementById('walk_pt').checked) {
+    filterPTPolygons(foodProg);
+    map.setLayoutProperty('walk_data', 'visibility', 'none');
+  } else {
+    map.setLayoutProperty('walk_data', 'visibility', 'none');
+    map.setLayoutProperty('pt_data', 'visibility', 'none');
+  }
+  
 }
 
-  function filterWalkPolygons(e) {
-    var foodProg = e.features[0].properties.OBJECTID.toString();
+function filterWalkPolygons(foodProg) {
+  // Set visibility
+  map.setLayoutProperty('walk_data', 'visibility', 'visible');
 
-    // Set visibility
-    map.setLayoutProperty('walk_data', 'visibility', 'visible');
+  map.setPaintProperty('walk_data', 'fill-color', [
+    'case', 
+    ['==', ['get', foodProg], null], 'rgba(0,0,0,0)', 
+    ['step', ['to-number', ['get', foodProg]],
+    '#063b00', 10,
+    '#089000', 20,
+    '#0eff00', 30,
+    'rgba(0,0,0,0)'
+  ]
+  ]);
+}
 
-    map.setPaintProperty('walk_data', 'fill-color', [
-      'case',
-      ['==', ['get', foodProg], null], 'rgba (0,0,0,0)',
-      ['step', ['to-number', ['get', foodProg]],
-        '#063b00', 10,
-        '#089000', 20,
-        '#0eff00', 30,
-        'rgba (0,0,0,0)'
-      ]
-    ]);
-  }
+function filterPTPolygons(foodProg) {
 
-  function filterPTPolygons(e) {
-    var foodProg = e.features[0].properties.OBJECTID.toString();
+  foodProg = foodProg + '_' + selectedDay + selectedTime;
 
-    map.setLayoutProperty('pt_data', 'visibility', 'visible');
+  map.setLayoutProperty('pt_data', 'visibility', 'visible');
 
-    map.setPaintProperty('pt_data', 'fill-color', [
-      'case',
-      ['==', ['get', foodProg], null], 'rgba (0,0,0,0)',
-      ['step', ['to-number', ['get', foodProg]],
-        '#063b00', 15,
-        '#089000', 30,
-        '#0eff00', 45,
-        'rgba (0,0,0,0)'
-      ]
-    ]);
-  }
-
-  map.on('click', 'locations-layer', (e) => {
-    const coordinates = e.features[0].geometry.coordinates.slice();
-
-    map.flyTo({
-      center: coordinates,
-      zoom: 12,
-      essential: true
-    });
-
-    filterPTPolygons(e);
-  });
+  map.setPaintProperty('pt_data', 'fill-color', [
+    'case', 
+    ['==', ['get', foodProg], null], 'rgba(0,0,0,0)', 
+    ['step', ['to-number', ['get', foodProg]],
+    '#4c00a4', 30,
+    '#00bbd1', 45,
+    '#00fff3', 60,
+    'rgba(0,0,0,0)'
+  ]
+  ]);
+}
