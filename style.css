@@ -80,3 +80,6 @@ h1 {
   #reset-filters:hover {
     background-color: #ff9999;
   }
+
+  /* geocoder style  */
+  .mapboxgl-ctrl-geocoder { width: 280px; }

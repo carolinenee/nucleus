@@ -64,6 +64,24 @@ map.on('load', () => {
   map.setLayoutProperty('pt_data', 'visibility', 'none');
 
   initCheckboxListeners();
+  // Add the geocoder to the map
+  const geocoder = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+    mapboxgl: mapboxgl,
+    marker: false, // Set to true if you want a marker at the location
+    placeholder: 'Search for places or addresses'
+});
+
+// Add geocoder to the map
+map.addControl(
+    geocoder,
+    'top-left' // Position og geocoder relative to map 
+);
+
+// listen for geocoder result event
+geocoder.on('result', (e) => {
+    console.log('Selected location:', e.result);
+});
 });
 
 let selectedDay = null;
