@@ -1,11 +1,18 @@
 .map-container {
-    position: absolute;
-    top: 12%; /* Distance from the top of the page */
-    bottom: 5%; /* Distance from the bottom of the page */
-    left: 15%; /*puts map in the middle (because it's at 70% size*/
-    width: 70%; /* makes the map take up 70% of screen*/
-    border: 1px solid #000000; /*adds a black outline on the map*/
+  position: absolute;
+  top: 12%;
+  /* Distance from the top of the page */
+  bottom: 5%;
+  /* Distance from the bottom of the page */
+  left: 15%;
+  /*puts map in the middle (because it's at 70% size*/
+  width: 70%;
+  /* makes the map take up 70% of screen*/
+  border: 1px solid #000000;
+  /*adds a black outline on the map*/
 }
+
+
 /* info container style */
 #food-program-details {
   position: absolute;
@@ -19,7 +26,8 @@
   max-height: 300px;
   overflow-y: auto;
   font-family: 'Montserrat';
-  z-index: 1000; /* Ensure it's above the map */
+  z-index: 1000;
+  /* Ensure it's above the map */
 }
 
 #food-program-details h2 {
@@ -31,78 +39,108 @@
   font-size: 14px;
   margin: 5px 0;
 }
+
 /* Style for the headings */
 h1 {
-    font-size: 2.5rem; /* Larger font size for the main heading */
-    margin-bottom: 10px; /* Space below the heading */
-    text-align: center; /* Center the heading */
-  }
-  
-  h2 {
-    font-size: 1.5rem; /* Smaller font size for the subheading */
-    margin-bottom: 20px; /* Space below the subheading */
-    text-align: center; /* Center the subheading */
-    color: #555; /* Dark gray color for the subheading */
-  }
-  
-  /* Style for the filters container */
-  #filters {
-    margin-bottom: 20px; /* Space below the filters */
-    text-align: center; /* Center the filters */
-  }
-  
-  /* Style for the dropdown buttons */
-  .dropdown-toggle {
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    padding: 10px;
-    cursor: pointer;
-    width: 200px; /* Fixed width for the dropdown buttons */
-    text-align: left;
-    margin: 5px; /* Space between dropdown buttons */
-  }
-  
-  .dropdown-toggle:hover {
-    background-color: #ddd;
-  }
-  
-  /* Style for the dropdown menu */
-  .dropdown-menu {
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-  
-  /* Style for dropdown items */
-  .dropdown-item {
-    display: block;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  .dropdown-item:hover {
-    background-color: #f0f0f0;
-  }
-  
-  /* Style for checkboxes */
-  .dropdown-item input[type="checkbox"] {
-    margin-right: 10px;
-  }
-  
-  /* Style for the reset button */
-  #reset-filters {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #ffcccc;
-    border: 1px solid #ff9999;
-    cursor: pointer;
-  }
-  
-  #reset-filters:hover {
-    background-color: #ff9999;
-  }
+  font-size: 2.5rem;
+  /* Larger font size for the main heading */
+  margin-bottom: 10px;
+  /* Space below the heading */
+  text-align: center;
+  /* Center the heading */
+}
 
-  /* geocoder style  */
-  .mapboxgl-ctrl-geocoder { width: 280px; }
+h2 {
+  font-size: 1.5rem;
+  /* Smaller font size for the subheading */
+  margin-bottom: 20px;
+  /* Space below the subheading */
+  text-align: center;
+  /* Center the subheading */
+  color: #555;
+  /* Dark gray color for the subheading */
+}
+
+/* Style for the filters container */
+#filters {
+  margin-bottom: 20px;
+  /* Space below the filters */
+  text-align: center;
+  /* Center the filters */
+}
+
+/* Style for the dropdown buttons */
+.dropdown-toggle {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 10px;
+  cursor: pointer;
+  width: 200px;
+  /* Fixed width for the dropdown buttons */
+  text-align: left;
+  margin: 5px;
+  /* Space between dropdown buttons */
+}
+
+.dropdown-toggle:hover {
+  background-color: #ddd;
+}
+
+/* Style for the dropdown menu */
+.dropdown-menu {
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Style for dropdown items */
+.dropdown-item {
+  display: block;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Style for checkboxes */
+.dropdown-item input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* Style for the reset button */
+#reset-filters {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #ffcccc;
+  border: 1px solid #ff9999;
+  cursor: pointer;
+}
+
+#reset-filters:hover {
+  background-color: #ff9999;
+}
+
+/* geocoder style  */
+.mapboxgl-ctrl-geocoder {
+  width: 280px;
+}
+
+/* header style */
+.custom-header {
+  background-color: #1a2238; /*nucleus color*/
+  /* Custom color */
+  padding: 50px 10px;
+  /* Custom padding */
+  text-align: center;
+}
+
+.custom-header h1 {
+  color:white;
+  /* Override Bootstrap's default */
+  padding-top: 0.8%;  /* Adjust top padding */
+  padding-bottom: 0.8%; /* Adjust bottom padding */
+}
