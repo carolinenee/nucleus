@@ -4,7 +4,6 @@
     bottom: 5%; /* Distance from the bottom of the page */
     left: 15%; /*puts map in the middle (because it's at 70% size*/
     width: 70%; /* makes the map take up 70% of screen*/
-    border-radius: 8px; /*rounds the edges pf the map*/
     border: 1px solid #000000; /*adds a black outline on the map*/
 }
 /* info container style */
@@ -19,7 +18,7 @@
   width: 250px;
   max-height: 300px;
   overflow-y: auto;
-  font-family: Arial, sans-serif;
+  font-family: 'Montserrat';
   z-index: 1000; /* Ensure it's above the map */
 }
 
