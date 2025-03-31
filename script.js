@@ -59,6 +59,21 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
+    map.addSource('boundaries', {
+      type: 'geojson',
+      data: 'https://raw.githubusercontent.com/carolinenee/nucleus/refs/heads/main/peel_bound.geojson'
+    });
+
+    map.addLayer({
+      id: 'boundaries',
+      type: 'line',
+      source: 'boundaries',
+      paint: {
+        'line-color': '#000000',
+        'line-width': 2
+      }
+    });
+
     //setting both walking and public transit coverage layers to invisible at first because they will be activated later
     map.setLayoutProperty('walk_data', 'visibility', 'none');
     map.setLayoutProperty('pt_data', 'visibility', 'none');
@@ -154,6 +169,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     map.setLayoutProperty('walk_data', 'visibility', 'none');
     map.setLayoutProperty('pt_data', 'visibility', 'none');
+
+    document.getElementById('walk_legend').style.display = 'none';
+    document.getElementById('pt_legend').style.display = 'none';
   });
 
   //-------------------------------------------------------------------------------------------------------------------------
@@ -228,12 +246,18 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('walk').checked) {
       filterWalkPolygons(foodProg);
       map.setLayoutProperty('pt_data', 'visibility', 'none');
+      document.getElementById('walk_legend').style.display = 'block';
+      document.getElementById('pt_legend').style.display = 'none';
     } else if (document.getElementById('walk_pt').checked) {
       filterPTPolygons(foodProg);
       map.setLayoutProperty('walk_data', 'visibility', 'none');
+      document.getElementById('walk_legend').style.display = 'none';
+      document.getElementById('pt_legend').style.display = 'block';
     } else {
       map.setLayoutProperty('walk_data', 'visibility', 'none');
       map.setLayoutProperty('pt_data', 'visibility', 'none');
+      document.getElementById('walk_legend').style.display = 'none';
+      document.getElementById('pt_legend').style.display = 'none';
     }
 
   }
