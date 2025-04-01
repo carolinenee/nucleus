@@ -128,6 +128,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (foodProg) updateLayers();
   };
+  // add the time indication 
+  function updateSelectedDateTime() {
+    const headerElement = document.getElementById("selected-date-time");
+
+    if (selectedDay && selectedTime) {
+        headerElement.textContent = `Selected: ${selectedDay}, ${selectedTime}`;
+    } else {
+        headerElement.textContent = "";
+    }};
 
   document.querySelectorAll('.day-option').forEach(item => {
     item.addEventListener('click', (e) => {
@@ -138,6 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
       e.target.classList.add('active');
 
       updateFilters();
+      updateSelectedDateTime();
     });
   });
 
@@ -150,6 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
       e.target.classList.add('active');
 
       updateFilters();
+      updateSelectedDateTime();
     });
   });
 
@@ -183,6 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('program-phone').textContent = '-';
     document.getElementById('program-hours').textContent = '-';
 
+    updateSelectedDateTime();
     console.log('Reset filters and cleared food program details.');
 
   });

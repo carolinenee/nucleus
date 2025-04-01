@@ -132,18 +132,23 @@ h2 {
 
 /* header style */
 .custom-header {
-  background-color: #1a2238; /*nucleus color*/
-  /* Custom color */
-  padding: 50px 10px;
-  /* Custom padding */
-  text-align: center;
+  background-color: #1a2238;
+  padding: 10px 20px; /* Adjust horizontal padding as needed */
+  display: flex;
+  justify-content: space-between; /* Pushes items to opposite ends */
+  align-items: center; /* Vertically centers them */
+  min-height: 5%;
 }
 
-.custom-header h1 {
-  color:white;
-  /* Override Bootstrap's default */
-  padding-top: 0.8%;  /* Adjust top padding */
-  padding-bottom: 0.8%; /* Adjust bottom padding */
+.custom-header h1, 
+.custom-header h2 {
+  color: white;
+  margin: 0; /* Remove default margins */
+}
+
+#selected-date-time {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .legend {
