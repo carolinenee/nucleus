@@ -79,16 +79,12 @@ document.addEventListener('DOMContentLoaded', function () {
     map.setLayoutProperty('pt_data', 'visibility', 'none');
 
     initCheckboxListeners();
-    //ouline box for approximatelt ontario
-    const ontarioBbox = [-95.15625, 41.6766, -74.34375, 56.8594];
     // Add the geocoder to the map
     const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl,
       marker: false, // Set to true if you want a marker at the location
-      placeholder: 'Search for places or addresses',
-      bbox: ontarioBbox, // Restrict results to Ontario
-      countries: 'ca' // Further restrict to Canada
+      placeholder: 'Search for places or addresses'
     });
 
     // Add geocoder to the map
@@ -102,73 +98,105 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('Selected location:', e.result);
     });
   });
-
+  
   let selectedDay = null;
   let selectedTime = null;
-
+  let selectedProgram = null;
+  let foodProg = null;
+  
   // Function to update filters when checkboxes are clicked
   function updateFilters() {
-
-    console.log('Updating filters with day:', selectedDay, 'and time:', selectedTime);
-
-    if (!selectedDay || !selectedTime) {
-      map.setFilter('food_data', ['all']);
-      return;
-    }
-
-    const timeIndex = { morning: 0, afternoon: 1, evening: 2 }[selectedTime];
-
-    const filter = [
-      '==',
-      ['at', timeIndex, ['coalesce', ['get', selectedDay], ['literal', [0, 0, 0]]]],
-      1
-    ];
-
-    map.setFilter('food_data', ['all', filter]);
-
-    if (foodProg) updateLayers();
-  };
-  // add the time indication 
-  function updateSelectedDateTime() {
-    const headerElement = document.getElementById("selected-date-time");
-
-    if (selectedDay && selectedTime) {
-        headerElement.textContent = `Selected: ${selectedDay}, ${selectedTime}`;
-    } else {
-        headerElement.textContent = "";
-    }};
-
-  document.querySelectorAll('.day-option').forEach(item => {
-    item.addEventListener('click', (e) => {
+      console.log('Updating filters with day:', selectedDay, 'time:', selectedTime, 'program:', selectedProgram);
+  
+      // Only apply filters when ALL THREE are selected
+      if (selectedDay && selectedTime && selectedProgram) {
+          const timeIndex = { morning: 0, afternoon: 1, evening: 2 }[selectedTime];
+          
+          // Create day/time filter
+          const dayTimeFilter = [
+              '==',
+              ['at', timeIndex, ['coalesce', ['get', selectedDay], ['literal', [0, 0, 0]]]],
+              1
+          ];
+  
+          // Create program filter
+          const programFilter = selectedProgram === "Other" 
+              ? [
+                  '!',
+                  ['match',
+                      ['get', 'PROGRAM'],
+                      ['Food Pantry', 'Food Bank', 'Soup Kitchen', 'Multi-Service'],
+                      true,
+                      false
+                  ]
+                ]
+              : ['==', ['get', 'PROGRAM'], selectedProgram];
+  
+          // Apply both filters
+          map.setFilter('food_data', ['all', dayTimeFilter, programFilter]);
+      } else {
+          // Show all features if not all three filters are selected
+          map.setFilter('food_data', ['all']);
+      }
+  
+      if (foodProg) updateLayers();
+  }
+  
+  // Program type filter event listeners
+  document.querySelectorAll('.program-option').forEach(item => {
+      item.addEventListener('click', (e) => {
+          e.preventDefault();
+          selectedProgram = e.target.dataset.program;
+  
+          document.querySelectorAll('.program-option').forEach(opt => opt.classList.remove('active'));
+          e.target.classList.add('active');
+  
+          updateFilters();
+      });
+  });
+  
+// Day filter event listener
+document.querySelectorAll('.day-option').forEach(item => {
+  item.addEventListener('click', (e) => {
       e.preventDefault();
       selectedDay = e.target.dataset.day;
-
+      console.log('Day selected:', selectedDay); // Debug log
       document.querySelectorAll('.day-option').forEach(opt => opt.classList.remove('active'));
       e.target.classList.add('active');
-
       updateFilters();
-      updateSelectedDateTime();
-    });
   });
+});
 
-  document.querySelectorAll('.time-option').forEach(item => {
-    item.addEventListener('click', (e) => {
+// Time filter event listener 
+document.querySelectorAll('.time-option').forEach(item => {
+  item.addEventListener('click', (e) => {
       e.preventDefault();
       selectedTime = e.target.dataset.time;
-
+      console.log('Time selected:', selectedTime); // Debug log
       document.querySelectorAll('.time-option').forEach(opt => opt.classList.remove('active'));
       e.target.classList.add('active');
-
       updateFilters();
-      updateSelectedDateTime();
-    });
   });
+});
+
+// Program filter event listener
+document.querySelectorAll('.program-option').forEach(item => {
+  item.addEventListener('click', (e) => {
+      e.preventDefault();
+      selectedProgram = e.target.dataset.program;
+      console.log('Program selected:', selectedProgram); // Debug log
+      document.querySelectorAll('.program-option').forEach(opt => opt.classList.remove('active'));
+      e.target.classList.add('active');
+      updateFilters();
+  });
+});
 
   document.getElementById('reset-filters').addEventListener('click', () => {
     selectedDay = null;
     selectedTime = null;
+    selectedProgram = null;
 
-    document.querySelectorAll('.day-option, .time-option').forEach(opt => opt.classList.remove('active'));
+    document.querySelectorAll('.day-option, .time-option, .program-option').forEach(opt => opt.classList.remove('active'));
 
     map.setFilter('food_data', ['all']);
 
@@ -187,16 +215,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('walk_legend').style.display = 'none';
     document.getElementById('pt_legend').style.display = 'none';
-    // Reset the program details without hiding the box
-    document.getElementById('program-name').textContent = 'Click a location to see details';
-    document.getElementById('program-address').textContent = '-';
-    document.getElementById('program-website').textContent = '-';
-    document.getElementById('program-phone').textContent = '-';
-    document.getElementById('program-hours').textContent = '-';
-
-    updateSelectedDateTime();
-    console.log('Reset filters and cleared food program details.');
-
   });
 
   //-------------------------------------------------------------------------------------------------------------------------
@@ -305,14 +323,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function filterPTPolygons(foodProg) {
 
-    foodProg = foodProg + '_' + selectedDay + selectedTime;
+    concatProg = foodProg + '_' + selectedDay + selectedTime;
 
     map.setLayoutProperty('pt_data', 'visibility', 'visible');
 
     map.setPaintProperty('pt_data', 'fill-color', [
       'case',
-      ['==', ['get', foodProg], null], 'rgba(0,0,0,0)',
-      ['step', ['to-number', ['get', foodProg]],
+      ['==', ['get', concatProg], null], 'rgba(0,0,0,0)',
+      ['step', ['to-number', ['get', concatProg]],
         '#4c00a4', 30,
         '#00bbd1', 45,
         '#00fff3', 60,
