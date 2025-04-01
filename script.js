@@ -79,12 +79,16 @@ document.addEventListener('DOMContentLoaded', function () {
     map.setLayoutProperty('pt_data', 'visibility', 'none');
 
     initCheckboxListeners();
+    //ouline box for approximatelt ontario
+    const ontarioBbox = [-95.15625, 41.6766, -74.34375, 56.8594];
     // Add the geocoder to the map
     const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl,
       marker: false, // Set to true if you want a marker at the location
-      placeholder: 'Search for places or addresses'
+      placeholder: 'Search for places or addresses',
+      bbox: ontarioBbox, // Restrict results to Ontario
+      countries: 'ca' // Further restrict to Canada
     });
 
     // Add geocoder to the map
@@ -172,6 +176,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('walk_legend').style.display = 'none';
     document.getElementById('pt_legend').style.display = 'none';
+    // Reset the program details without hiding the box
+    document.getElementById('program-name').textContent = 'Click a location to see details';
+    document.getElementById('program-address').textContent = '-';
+    document.getElementById('program-website').textContent = '-';
+    document.getElementById('program-phone').textContent = '-';
+    document.getElementById('program-hours').textContent = '-';
+
+    console.log('Reset filters and cleared food program details.');
+
   });
 
   //-------------------------------------------------------------------------------------------------------------------------

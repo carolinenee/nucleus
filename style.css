@@ -1,8 +1,8 @@
 .map-container {
   position: absolute;
-  top: 12%;
+  top: 10%;
   /* Distance from the top of the page */
-  bottom: 5%;
+  bottom: 2%;
   /* Distance from the bottom of the page */
   left: 15%;
   /*puts map in the middle (because it's at 70% size*/
@@ -16,14 +16,13 @@
 /* info container style */
 #food-program-details {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: rgba(255, 255, 255, 0.9);
+  top: 10%;
+  left: 86%;
+  background-color: rgba(232, 229, 229, 0.9);
   padding: 10px;
-  border-radius: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  width: 250px;
-  max-height: 300px;
+  width: 13%;
+  /* max-height: 300px; add once you know size of legend*/
   overflow-y: auto;
   font-family: 'Montserrat';
   z-index: 1000;
@@ -114,7 +113,9 @@ h2 {
 /* Style for the reset button */
 #reset-filters {
   margin-top: 20px;
+  margin-left: 5px;     
   padding: 10px;
+  width: 200px;
   background-color: #ffcccc;
   border: 1px solid #ff9999;
   cursor: pointer;
@@ -147,12 +148,11 @@ h2 {
 
 .legend {
   position: absolute;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(232, 229, 229, 0.9);
   bottom: 0;
   right: 0;
   margin: 0 10px 30px 0;
   padding: 10px;
-  border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   max-width: 200px;
   display: none;
