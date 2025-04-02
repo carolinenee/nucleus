@@ -1,37 +1,85 @@
-.map-container {
-  position: absolute;
-  top: 10%;
-  /* Distance from the top of the page */
-  bottom: 2%;
-  /* Distance from the bottom of the page */
-  left: 15%;
-  /*puts map in the middle (because it's at 70% size*/
-  width: 70%;
-  /* makes the map take up 70% of screen*/
-  border: 1px solid #000000;
-  /*adds a black outline on the map*/
+#header-id {
+  padding: 1%;
+  /* Adds 5% padding around the container */
+  background-color: rgb(212, 212, 212);
+  color: black;
+  height: 7vh;
+  margin-bottom: 1vh;
 }
 
+#title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  /* Extra-bold */
+}
 
-/* info container style */
+#h1 {
+  font-weight: bold;
+}
+
+.container-fluid2 {
+  height: 91vh;
+  /* Make the entire container take full viewport height after we account for 2vh for margin and 7 for header */
+}
+
+.row {
+  height: 100%;
+  /* Ensure the row fills the height */
+}
+
+#my-map {
+  height: 100%;
+  /* Make the map fill its container */
+  width: 100%;
+  overflow: hidden;
+  /* Cut off any parts outside the 9-column width */
+}
+
+#filters-col {
+  background-color: rgb(212, 212, 212);
+  margin-left: 1.5%;
+  padding: 0.1%;
+
+}
+
+#details-col {
+  margin-right: 1.5%;
+  overflow-x: auto;
+}
+
+#program-row {
+  height: fit-content; /* Modern browsers */
+  min-height: fit-content; /* Alternative */
+  background-color:  rgb(212, 212, 212);
+  margin-top: 0;
+  margin-bottom: 1vh;
+}
+#legend-row{
+  height: fit-content; /* Modern browsers */
+  min-height: fit-content; /* Alternative */
+  background-color: rgb(212, 212, 212);
+  margin-top: 0%;
+  margin-bottom: 1.5%;
+  font-size: 16px;
+
+}
+
 #food-program-details {
-  position: absolute;
-  top: 10%;
-  left: 86%;
-  background-color: rgba(232, 229, 229, 0.9);
-  padding: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  width: 13%;
-  /* max-height: 300px; add once you know size of legend*/
-  overflow-y: auto;
-  font-family: 'Montserrat';
-  z-index: 1000;
-  /* Ensure it's above the map */
+  height: fit-content;
+  min-height: fit-content;
+  background-color: rgb(212, 212, 212);
+  margin-top: 0;
+  margin-bottom: 1vh;
+  padding-left: 2%;
+  padding-top: 2%;
+  max-width: 100%; /* Ensure it doesn't exceed its parent width */
+  overflow-x: auto; 
 }
 
 #food-program-details h2 {
-  font-size: 16px;
+  font-size: 16px; /* Reduced from 16px */
   margin-bottom: 5px;
+  font-weight: 600; /* Optional: make it slightly bolder for better readability at smaller size */
 }
 
 #food-program-details p {
@@ -39,42 +87,45 @@
   margin: 5px 0;
 }
 
-/* Style for the headings */
-h1 {
-  font-size: 2.5rem;
-  /* Larger font size for the main heading */
-  margin-bottom: 10px;
-  /* Space below the heading */
-  text-align: center;
-  /* Center the heading */
+#food-program-details {
+  padding-left: 2%;
+  padding-top: 2%;
 }
 
-h2 {
-  font-size: 1.5rem;
-  /* Smaller font size for the subheading */
-  margin-bottom: 20px;
-  /* Space below the subheading */
-  text-align: center;
-  /* Center the subheading */
-  color: #555;
-  /* Dark gray color for the subheading */
+.legend span {
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  margin-right: 5px;
 }
 
-/* Style for the filters container */
-#filters {
-  margin-bottom: 20px;
-  /* Space below the filters */
-  text-align: center;
-  /* Center the filters */
+#walk_legend div:nth-child(2) span {
+  background-color: #063b00;
 }
 
-/* Style for the dropdown buttons */
+#walk_legend div:nth-child(3) span {
+  background-color: #089000;
+}
+
+#walk_legend div:nth-child(4) span {
+  background-color: #0eff00;
+}
+
+#pt_legend div:nth-child(2) span {
+  background-color: #4c00a4;
+}
+
+#pt_legend div:nth-child(3) span {
+  background-color: #00bbd1;
+}
+
+#pt_legend div:nth-child(4) span {
+  background-color: #00fff3;
+}
+
 .dropdown-toggle {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
   padding: 10px;
   cursor: pointer;
-  width: 200px;
   /* Fixed width for the dropdown buttons */
   text-align: left;
   margin: 5px;
@@ -113,9 +164,8 @@ h2 {
 /* Style for the reset button */
 #reset-filters {
   margin-top: 20px;
-  margin-left: 5px;     
+  margin-left: 5px;
   padding: 10px;
-  width: 200px;
   background-color: #ffcccc;
   border: 1px solid #ff9999;
   cursor: pointer;
@@ -125,71 +175,39 @@ h2 {
   background-color: #ff9999;
 }
 
-/* geocoder style  */
-.mapboxgl-ctrl-geocoder {
-  width: 280px;
+@media (max-width: 1100px) {
+
+  /* Adjust the value as needed */
+  .row {
+     flex-direction: column;
+     /* Stack elements */
+  }
+
+  #my-map {
+     height: 50vh;
+     /* Adjust map height when stacked */
+  }
+
+  #details-col {
+     margin-top: 2vh;
+     /* Add space when stacked */
+     width: fit-content;
+     overflow-x: auto;
+     /* This allows scrolling if content overflows */
+     max-height: 100vh;
+     /* Limit height so it doesn’t grow infinitely */
+  }
+
 }
 
-/* header style */
-.custom-header {
-  background-color: #1a2238;
-  padding: 10px 20px; /* Adjust horizontal padding as needed */
-  display: flex;
-  justify-content: space-between; /* Pushes items to opposite ends */
-  align-items: center; /* Vertically centers them */
-  min-height: 5%;
+#filters-col {
+  margin-bottom: 2vh;
+  width: fit-content;
 }
 
-.custom-header h1, 
-.custom-header h2 {
-  color: white;
-  margin: 0; /* Remove default margins */
-}
 
-#selected-date-time {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.legend {
-  position: absolute;
-  background-color: rgba(232, 229, 229, 0.9);
-  bottom: 0;
-  right: 0;
-  margin: 0 10px 30px 0;
-  padding: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  max-width: 200px;
-  display: none;
-}
-
-.legend span {
-  display: inline-block;
-  height: 10px;
-  width: 10px;
-  margin-right: 5px;
-}
-
-#walk_legend div:nth-child(2) span {
-  background-color: #063b00;
-}
-
-#walk_legend div:nth-child(3) span {
-  background-color: #089000;
-}
-
-#walk_legend div:nth-child(4) span {
-  background-color: #0eff00;
-}
-
-#pt_legend div:nth-child(2) span {
-  background-color: #4c00a4;
-}
-
-#pt_legend div:nth-child(3) span {
-  background-color: #00bbd1;
-}
-
-#pt_legend div:nth-child(4) span {
-  background-color: #00fff3;
+#walk_legend,
+#pt_legend {
+  font-size: 14px;
+  /* Adjust the size as needed */
 }

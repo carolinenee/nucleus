@@ -79,12 +79,16 @@ document.addEventListener('DOMContentLoaded', function () {
     map.setLayoutProperty('pt_data', 'visibility', 'none');
 
     initCheckboxListeners();
+      //ouline box for approximatelt ontario
+const ontarioBbox = [-95.15625, 41.6766, -74.34375, 56.8594];
     // Add the geocoder to the map
     const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
       mapboxgl: mapboxgl,
       marker: false, // Set to true if you want a marker at the location
-      placeholder: 'Search for places or addresses'
+      placeholder: 'Search for places or addresses',
+      bbox: ontarioBbox, // Restrict results to Ontario
+      countries: 'ca' // Further restrict to Canada
     });
 
     // Add geocoder to the map
@@ -215,6 +219,13 @@ document.querySelectorAll('.program-option').forEach(item => {
 
     document.getElementById('walk_legend').style.display = 'none';
     document.getElementById('pt_legend').style.display = 'none';
+    // **Reset program details container**
+    document.getElementById('program-name').textContent = "Select a program";
+    document.getElementById('program-address').textContent = "";
+    document.getElementById('program-phone').textContent = "";
+    document.getElementById('program-hours').textContent = "";
+    document.getElementById('program-website').textContent="";
+    
   });
 
   //-------------------------------------------------------------------------------------------------------------------------
@@ -338,6 +349,84 @@ document.querySelectorAll('.program-option').forEach(item => {
       ]
     ]);
   }
+  //time indicator stuff 
+  function updateTimeIndicator() {
+    const timeIndicator = document.getElementById('time-indicator');
+    
+    // Create parts of the message based on selections
+    const dayPart = selectedDay ? selectedDay.charAt(0).toUpperCase() + selectedDay.slice(1) : "";
+    const timePart = selectedTime ? selectedTime.charAt(0).toUpperCase() + selectedTime.slice(1) : "";
+    const programPart = selectedProgram || "";
+    
+    // Build the full message
+    let message = "";
+    
+    if (dayPart || timePart || programPart) {
+        message = "Showing: ";
+        
+        const parts = [];
+        if (dayPart) parts.push(dayPart);
+        if (timePart) parts.push(timePart);
+        if (programPart) parts.push(programPart);
+        
+        message += parts.join(" • ");
+    } else {
+        message = "No filters selected";
+    }
+    
+    // Update the element
+    timeIndicator.textContent = message;
+}
+
+// Event listeners for day options
+document.querySelectorAll('.day-option').forEach(option => {
+    option.addEventListener('click', function(e) {
+        e.preventDefault();
+        selectedDay = this.getAttribute('data-day');
+        document.getElementById('day-dropdown').textContent = this.textContent;
+        updateTimeIndicator();
+    });
+});
+
+// Event listeners for time options
+document.querySelectorAll('.time-option').forEach(option => {
+    option.addEventListener('click', function(e) {
+        e.preventDefault();
+        selectedTime = this.getAttribute('data-time');
+        document.getElementById('time-dropdown').textContent = this.textContent;
+        updateTimeIndicator();
+    });
+});
+
+// Event listeners for program options
+document.querySelectorAll('.program-option').forEach(option => {
+    option.addEventListener('click', function(e) {
+        e.preventDefault();
+        selectedProgram = this.getAttribute('data-program');
+        document.getElementById('program-dropdown').textContent = this.textContent;
+        updateTimeIndicator();
+    });
+});
+
+// Reset filters button
+document.getElementById('reset-filters').addEventListener('click', function() {
+    // Reset selected values
+    selectedDay = null;
+    selectedTime = null;
+    selectedProgram = null;
+    
+    // Reset dropdown button text
+    document.getElementById('day-dropdown').textContent = 'Select a Day';
+    document.getElementById('time-dropdown').textContent = 'Select a Time';
+    document.getElementById('program-dropdown').textContent = 'Type of Program';
+    
+    // Update the time indicator
+    updateTimeIndicator();
+});
+
+// Initialize the time indicator
+updateTimeIndicator();
+  
 
 }
 );
