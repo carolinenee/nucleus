@@ -14,4 +14,4 @@
    General Transit Feed Specification (GTFS) datasets for transit services operating within Peel Region:
    - **GO Transit** (Metrolinx): [Open Data Portal](https://www.metrolinx.com/en/about-us/open-data)
    - **MiWay** (Mississauga): [Developer Download Page](https://www.mississauga.ca/miway-transit/developer-download/)
-   - **Brampton Transit**: *(link not provided — add here if available)*</p>
+   - **Brampton Transit**: [yes}(https://geohub.brampton.ca/datasets/a355aabd5a8c490186bdce559c9c75fb/about)</p>
