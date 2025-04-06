@@ -15,3 +15,12 @@
    - [**GO Transit**](https://www.metrolinx.com/en/about-us/open-data)
    - [**MiWay**](https://www.mississauga.ca/miway-transit/developer-download/)
    - [**Brampton Transit**](https://geohub.brampton.ca/datasets/a355aabd5a8c490186bdce559c9c75fb/about)</p>
+
+<p>R5py was used to create a network analysis which was then pushed to the web map as a series of hexgrid maps, showing food services accessibility based on the mode of transit (walking or taking the public transit).</p>
+
+## Web Map Interactivity:
+To use the web map, the user needs to:
+1. Select the day of the week of interest
+2. Select the time of the day of interest (Morning/Afternoon/Evening)
+3. Select the program type (Food bank/Soup kitchen/All, etc.)
+<p>After completing the three steps, the user will be presented with a map of filtered locations that meet the combination of three criteria. After that the user can click on any location to read the location profile and to choose the network analysis of interest (Walking or Public Transit).</p>
