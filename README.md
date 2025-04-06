@@ -1,8 +1,8 @@
 # Food Programs in Peel Region: Web Map for Nucleus Independent Living 
  
 <p> This web map was created by Caroline Nee, Muhammad Khalis bin Samion and Polina Gorn for Nucleus Independent Living as part of the Sandbox Initiative that was introduced in GGR472H1: Developing Web Maps. The purpose of the map is to explore food deserts in the Peel region (Mississauga + Brampton + Caledon), based on the day of the week, time of the day, mode of transit, and type of program of interest. This map illustrates that there are many factors that can create food deserts, even if the food programs exist in the area.</p>
-<p>The web map was created using the following data sources:
 
+## Data Sources:
 1. **Location of Food Programmes in Peel Region**  
    [**Peel Data Portal - Food Programmes Layer**](https://data.peelregion.ca/datasets/857c09ef7fbb41e18fc9c119aee8ee38_0/explore?location=43.713594%2C-79.809875%2C10.82)
 
@@ -24,3 +24,6 @@ To use the web map, the user needs to:
 2. Select the time of the day of interest (Morning/Afternoon/Evening)
 3. Select the program type (Food bank/Soup kitchen/All, etc.)
 <p>After completing the three steps, the user will be presented with a map of filtered locations that meet the combination of three criteria. After that the user can click on any location to read the location profile and to choose the network analysis of interest (Walking or Public Transit).</p>
+
+## Limitations
+This web map is based on static transit data, that is relevant as of April 2025. Therefore, the network analysis needs to be regularly updated using r5py for relevant transit network representation.
